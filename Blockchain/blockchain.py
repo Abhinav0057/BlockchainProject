@@ -33,7 +33,7 @@ class Blockchain:  # defining our blockchain class
         while check_proof is False:
              hash_operation = hashlib.sha256(
                  str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
-            if hash_operation[:2] == '000':
+            if hash_operation[:4] == '0000':
                 check_proof = True
             else:
                 new_proof += 1
@@ -52,7 +52,7 @@ class Blockchain:  # defining our blockchain class
             previous_proof=previous_block['proof']
             proof=block['proof']
             hash_operation=hashlib.sha256(str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
-            if hash_operation[:4]!='000'
+            if hash_operation[:4]!='0000':
                 return False
             previous_block=block
             block_index+=1
