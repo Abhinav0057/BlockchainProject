@@ -52,11 +52,37 @@ class Blockchain:  # defining our blockchain class
             previous_proof=previous_block['proof']
             proof=block['proof']
             hash_operation=hashlib.sha256(str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
-            if hash_operation[:4]!='000':
+            if hash_operation[:4]!='000'
                 return False
             previous_block=block
             block_index+=1
         return True
+     def add_transactions(self,sender,reciver,amount):
+        self.trasactions.append({'sender':sender,
+                             'reciver':reciver,
+                             'amount':amount})
+        previous_block=self.get_previous_block()
+        return previous_block['index']+1
+    
+    def add_node(self,address):
+        parsed_url=urlparse(address)
+        self.nodes.add(parsed_url.netloc)
+        
+    def replace_chain(self):
+        network =self.nodes
+        longest_chain=None
+        max_length=len(self.chain)
+        for node in network:
+            response=request.get(f'http://{node}/get_chain')
+            length=response.json()['length']
+            chain=response.json()['chain']
+            if length>max_length and self.is_chain_valid(chain):
+                max_length=length
+                longest_chain=chain
+            if longest_chain:
+                self.chain=longest_chain
+                return True
+            return False
     
     
     
