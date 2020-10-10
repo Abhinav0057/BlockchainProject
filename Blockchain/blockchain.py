@@ -13,10 +13,13 @@ class Blockchain:  # defining our blockchain class
         self.nodes = set()  # crates nodes unordederd set
 
     def create_block(self, proof, previous_hash):  # create a block
+        own_hash = hashlib.sha256(
+            str(proof**3 - proof**4).encode()).hexdigest()
         block = {'index': len(self.chain)+1,
                'timestamp': str(datetime.datetime.now()),
                'proof': proof,
                'previous_hash': previous_hash,
+               'own_hash': own_hash,
                'trasactions': self.trasactions}
         self.chain.append(block)
         return block
@@ -28,8 +31,8 @@ class Blockchain:  # defining our blockchain class
         new_proof = 1
         check_proof = False
         while check_proof is False:
-            hash_operation = hashlib.sha256(str(new_proof**3 - previous_proof**4).encode()).hexdigest()
-            if hash_operation[:2] == '00':
+             hash_operation=hashlib.sha256(str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
+            if hash_operation[:2] == '000':
                 check_proof = True
             else:
                 new_proof += 1
@@ -48,12 +51,12 @@ class Blockchain:  # defining our blockchain class
             previous_proof=previous_block['proof']
             proof=block['proof']
             hash_operation=hashlib.sha256(str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
-            if hash_operation[:4]!='0000':
+            if hash_operation[:4]!='000':
                 return False
             previous_block=block
             block_index+=1
         return True
-   
+    
     
     
         
