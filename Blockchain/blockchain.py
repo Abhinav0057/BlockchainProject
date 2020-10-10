@@ -27,11 +27,12 @@ class Blockchain:  # defining our blockchain class
     def get_previous_block(self):
         return self.chain[-1]
 
-  def proof_of_work(self, previous_proof):                           #hasing function to find the nonce
+    def proof_of_work(self, previous_proof):  # hasing function to find the nonce
         new_proof = 1
         check_proof = False
         while check_proof is False:
-             hash_operation=hashlib.sha256(str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
+             hash_operation = hashlib.sha256(
+                 str(proof**3-previous_proof**3-proof+proof*3.14).encode()).hexdigest()
             if hash_operation[:2] == '000':
                 check_proof = True
             else:
